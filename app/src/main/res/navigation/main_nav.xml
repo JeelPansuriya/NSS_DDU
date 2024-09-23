@@ -74,5 +74,13 @@
         android:id="@+id/homeFragment"
         android:name="com.example.nss_ddu.fragments.homeFragment"
         android:label="homeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_eventDetailFragment"
+            app:destination="@id/eventDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="com.example.nss_ddu.fragments.EventDetailFragment"
+        android:label="EventDetailFragment" />
 </navigation>

@@ -1,15 +1,18 @@
 package com.example.nss_ddu.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.nss_ddu.R;
 import com.example.nss_ddu.adapters.EventAdapter;
 import com.example.nss_ddu.databinding.FragmentHomeBinding;
 import com.example.nss_ddu.models.Event;
@@ -23,43 +26,48 @@ public class homeFragment extends Fragment {
     private EventAdapter eventAdapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Initialize view binding
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Set up RecyclerView using view binding
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        eventAdapter = new EventAdapter();
+
+        // Initialize event adapter
+        eventAdapter = new EventAdapter(event -> {
+            // Handle event card click and navigate to EventDetailFragment
+            Bundle bundle = new Bundle();
+            bundle.putString("eventTitle", event.getTitle());
+            bundle.putString("eventDate", event.getDate());
+            bundle.putString("eventVenue", event.getVenue());
+            bundle.putString("eventDescription", event.getDescription());
+            bundle.putString("registrationLink", event.getLink());
+
+            // Navigate to the event detail fragment
+            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_eventDetailFragment, bundle);
+        });
+
         binding.recyclerView.setAdapter(eventAdapter);
 
-        Toast.makeText(getContext(), "Fetching events...", Toast.LENGTH_SHORT).show();
-
-        // Fetch events asynchronously
+        // Fetch events from DynamoDB
         DynamoDBHelper dynamoDBHelper = new DynamoDBHelper(getContext());
         dynamoDBHelper.getEvents(new DynamoDBHelper.Callback() {
             @Override
             public void onSuccess(List<Event> events) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        eventAdapter.setEvents(events);
-                        Toast.makeText(getContext(), "Events fetched successfully!", Toast.LENGTH_SHORT).show();
-                    });
-                }
+                // Update the RecyclerView on the main thread
+                getActivity().runOnUiThread(() -> eventAdapter.setEvents(events));
             }
 
             @Override
             public void onFailure(Exception exception) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Failed to fetch events: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-                }
+                // Show Toast message on the main thread
+                new Handler(Looper.getMainLooper()).post(() ->
+                        Toast.makeText(getContext(), "Failed to fetch events", Toast.LENGTH_SHORT).show()
+                );
             }
         });
     }
@@ -67,7 +75,6 @@ public class homeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Release view binding reference
         binding = null;
     }
 }

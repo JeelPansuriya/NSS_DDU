@@ -5,40 +5,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.models.Event;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
 
-    private List<Event> events = new ArrayList<>();
+    private List<Event> events;
+    private OnItemClickListener listener;
 
-    @NonNull
-    @Override
-    public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item, parent, false);
-        return new EventViewHolder(view);
+    public interface OnItemClickListener {
+        void onItemClick(Event event);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
-        Event event = events.get(position);
-        holder.title.setText(event.getTitle());
-        holder.description.setText(event.getDescription());
-        holder.date.setText(event.getDate());
-        holder.venue.setText(event.getVenue());
-        holder.time.setText(event.getTime());
-        holder.link.setText(event.getLink());
-    }
-
-    @Override
-    public int getItemCount() {
-        return events.size();
+    public EventAdapter(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     public void setEvents(List<Event> events) {
@@ -46,17 +30,39 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         notifyDataSetChanged();
     }
 
-    static class EventViewHolder extends RecyclerView.ViewHolder {
-        TextView title, description, date, venue, time,link;
+    @Override
+    public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // Inflate the event card layout
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_card_layout, parent, false);
+        return new EventViewHolder(view);
+    }
 
-        EventViewHolder(View itemView) {
+    @Override
+    public void onBindViewHolder(EventViewHolder holder, int position) {
+        Event event = events.get(position);
+        holder.bind(event, listener);
+    }
+
+    @Override
+    public int getItemCount() {
+        return events == null ? 0 : events.size();
+    }
+
+    class EventViewHolder extends RecyclerView.ViewHolder {
+        private TextView titleTextView;
+        private TextView dateVenueTextView;
+
+        public EventViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.eventTitle);
-            description = itemView.findViewById(R.id.eventDescription);
-            date = itemView.findViewById(R.id.eventDate);
-            venue = itemView.findViewById(R.id.eventVenue);
-            time = itemView.findViewById(R.id.eventTime);
-            link = itemView.findViewById(R.id.eventLink);
+            titleTextView = itemView.findViewById(R.id.titleTextView);
+            dateVenueTextView = itemView.findViewById(R.id.dateVenueTextView);
+        }
+
+        public void bind(final Event event, final OnItemClickListener listener) {
+            titleTextView.setText(event.getTitle());
+            dateVenueTextView.setText(event.getDate() + ", " + event.getVenue());
+
+            itemView.setOnClickListener(v -> listener.onItemClick(event));
         }
     }
 }
