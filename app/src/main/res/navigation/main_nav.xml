@@ -23,11 +23,11 @@
         android:name="com.example.nss_ddu.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
-        <!-- Action to navigate to Sign Up Fragment -->
+
         <action
             android:id="@+id/action_loginFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
-        <!-- Action to navigate to Forgot Password Fragment -->
+
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPassFragment" />
@@ -73,6 +73,6 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.nss_ddu.fragments.homeFragment"
-        android:label="fragment_home"
+        android:label="homeFragment"
         tools:layout="@layout/fragment_home" />
 </navigation>

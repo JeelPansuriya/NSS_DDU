@@ -1,7 +1,10 @@
 package com.example.nss_ddu.fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,9 +70,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onSuccess(CognitoUserSession session) {
                 showToast("Login successful");
-
-                // Navigate to HomeFragment without fetching events here
-                navigateToHome();
+                Log.d(TAG, "onSuccess: navigating to home");
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.action_loginFragment_to_homeFragment);
             }
 
             @Override
@@ -80,13 +83,6 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-
-    // Navigate to HomeFragment
-    private void navigateToHome() {
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        navController.navigate(R.id.action_loginFragment_to_homeFragment);
-    }
-
     // Navigate to SignUpFragment
     private void navigateToSignUp() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);

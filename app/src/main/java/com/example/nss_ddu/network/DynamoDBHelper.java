@@ -45,20 +45,21 @@ public class DynamoDBHelper {
             try {
                 ScanRequest scanRequest = new ScanRequest()
                         .withTableName("nssddu_events");
-
                 ScanResult result = dynamoDBClient.scan(scanRequest);
 
                 for (Map<String, AttributeValue> item : result.getItems()) {
-                    String title = item.get("title").getS();
+                    Log.d(TAG, "Fetched item: " + item.toString());
+                    String title = item.get("EventTitle").getS();
+                    String date = item.get("Date").getS();
                     String description = item.get("description").getS();
-                    String date = item.get("date").getS();
-                    String venue = item.get("venue").getS();
-                    String time = item.get("time").getS();
+                    String registration = item.get("RegistrationLink").getS();
+                    String time = item.get("Time").getS();
+                    String venue = item.get("Venue").getS();
 
-                    Event event = new Event(title, description, date, venue, time);
+                    Event event = new Event(title, description, date, venue, time, registration);
                     eventList.add(event);
                 }
-
+                Log.d(TAG, "Number of events fetched: " + eventList.size());
                 // Notify success
                 callback.onSuccess(eventList);
 
