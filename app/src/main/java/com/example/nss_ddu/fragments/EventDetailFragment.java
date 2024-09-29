@@ -24,7 +24,8 @@ public class EventDetailFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             binding.titleTextView.setText(args.getString("eventTitle"));
-            binding.dateVenueTextView.setText(args.getString("eventDate") + ", " + args.getString("eventVenue"));
+            binding.dateTimeTextView.setText(args.getString("eventDate") + ", " + args.getString("eventTime"));
+            binding.venueTextView.setText(args.getString("eventVenue"));
             binding.descriptionTextView.setText(args.getString("eventDescription"));
 
             String registrationLink = args.getString("registrationLink");

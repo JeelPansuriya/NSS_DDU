@@ -44,6 +44,7 @@ public class homeFragment extends Fragment {
             bundle.putString("eventTitle", event.getTitle());
             bundle.putString("eventDate", event.getDate());
             bundle.putString("eventVenue", event.getVenue());
+            bundle.putString("eventTime", event.getTime());
             bundle.putString("eventDescription", event.getDescription());
             bundle.putString("registrationLink", event.getLink());
 

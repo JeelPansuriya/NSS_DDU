@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.example.nss_ddu.Cognito;
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.databinding.FragmentSignupBinding;
@@ -102,7 +104,7 @@ public class signupFragment extends Fragment {
         builder.setPositiveButton("Confirm", (dialog, which) -> {
             String otpCode = otpInput.getText().toString().trim();
             if (!TextUtils.isEmpty(otpCode)) {
-                authentication.confirmUser(email, otpCode);
+                authentication.confirmUser(email, otpCode, getActivity());
             } else {
                 Toast.makeText(getContext(), "Please enter the OTP", Toast.LENGTH_SHORT).show();
             }

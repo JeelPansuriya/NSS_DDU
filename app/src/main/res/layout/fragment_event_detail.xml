@@ -13,11 +13,19 @@
         android:paddingBottom="8dp"/>
 
     <TextView
-        android:id="@+id/dateVenueTextView"
+        android:id="@+id/dateTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:paddingBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/venueTextView"
+        android:textSize="16sp"
+        android:paddingBottom="8dp" />
+
 
     <TextView
         android:id="@+id/descriptionTextView"

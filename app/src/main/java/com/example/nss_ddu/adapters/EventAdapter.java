@@ -50,18 +50,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     class EventViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTextView;
-        private TextView dateVenueTextView;
+        private TextView dateTimeTextView;
+        private TextView venueTextView;
 
         public EventViewHolder(View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
-            dateVenueTextView = itemView.findViewById(R.id.dateVenueTextView);
+            dateTimeTextView = itemView.findViewById(R.id.dateTimeTextView);
+            venueTextView = itemView.findViewById(R.id.venueTextView);
         }
 
         public void bind(final Event event, final OnItemClickListener listener) {
             titleTextView.setText(event.getTitle());
-            dateVenueTextView.setText(event.getDate() + ", " + event.getVenue());
-
+            dateTimeTextView.setText(event.getDate() + ", " + event.getTime());
+            venueTextView.setText(event.getVenue());
             itemView.setOnClickListener(v -> listener.onItemClick(event));
         }
     }

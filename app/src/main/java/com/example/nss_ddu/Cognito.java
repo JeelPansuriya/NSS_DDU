@@ -6,10 +6,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
@@ -58,7 +61,7 @@ public class Cognito {
 
     private SignUpHandler signUpCallback = new SignUpHandler() {
         public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-            Log.d(TAG, "Sign-up success");
+            Log.d(TAG, "OTP sent !");
             ((Activity) appContext).runOnUiThread(() ->
                     Toast.makeText(appContext, "Sign-up success", Toast.LENGTH_LONG).show()
             );
@@ -88,23 +91,28 @@ public class Cognito {
 
 
 
-    public void confirmUser(String userId, String code) {
+    public void confirmUser(String userId, String code, FragmentActivity activity) {
         CognitoUser cognitoUser = userPool.getUser(userId);
-        cognitoUser.confirmSignUpInBackground(code, false, confirmationCallback);
+        cognitoUser.confirmSignUpInBackground(code, false, new GenericHandler() {
+            @Override
+            public void onSuccess() {
+                // User confirmed successfully
+                Toast.makeText(appContext, "Sign up done !", Toast.LENGTH_LONG).show();
+
+                // Navigate to the LoginFragment after successful confirmation
+                NavController navController = Navigation.findNavController(activity, R.id.nav_host_fragment); // Adjust to your host fragment ID
+                navController.navigate(R.id.action_signupFragment_to_loginFragment); // Adjust action ID to match your nav_graph.xml
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // Handle the failure case
+                Toast.makeText(appContext, "User confirmation failed: " + exception.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d(TAG, "User confirmation failed: " + exception);
+            }
+        });
     }
 
-    private GenericHandler confirmationCallback = new GenericHandler() {
-        @Override
-        public void onSuccess() {
-            Toast.makeText(appContext, "User Confirmed", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onFailure(Exception exception) {
-            Toast.makeText(appContext, "User confirmation failed: " + exception.getMessage(), Toast.LENGTH_LONG).show();
-            Log.d(TAG, "User confirmation failed: " + exception);
-        }
-    };
 
     public void userLogin(String userId, String password, LoginCallback callback) {
         CognitoUser cognitoUser = userPool.getUser(userId);

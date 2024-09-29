@@ -48,7 +48,7 @@ public class forgotpassFragment extends Fragment {
             @Override
             public void onSuccess() {
                 Log.d("ForgotPass", "onSuccess: Reset code sent. Navigating to confirm password fragment.");
-                showToast("Reset code sent to your email");
+                showToast("Reset code sent");
 
                 // Navigate to confirm password fragment
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
