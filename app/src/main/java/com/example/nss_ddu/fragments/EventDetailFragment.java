@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.nss_ddu.databinding.FragmentEventDetailBinding;
@@ -19,11 +21,15 @@ public class EventDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEventDetailBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-
+        Toolbar toolbar = binding.toolbar;
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         // Get event details from arguments
         Bundle args = getArguments();
         if (args != null) {
-            binding.titleTextView.setText(args.getString("eventTitle"));
+            //binding.titleTextView.setText(args.getString("eventTitle"));
+            toolbar.setTitle(args.getString("eventTitle"));
             binding.dateTimeTextView.setText(args.getString("eventDate") + ", " + args.getString("eventTime"));
             binding.venueTextView.setText(args.getString("eventVenue"));
             binding.descriptionTextView.setText(args.getString("eventDescription"));
@@ -33,6 +39,7 @@ public class EventDetailFragment extends Fragment {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(registrationLink));
                 startActivity(browserIntent);
             });
+
         }
 
         return view;

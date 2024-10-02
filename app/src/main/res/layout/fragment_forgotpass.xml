@@ -3,28 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/login_bk"
     android:layout_height="match_parent"
     tools:context=".fragments.forgotpassFragment">
 
-    <!-- Lottie Animation -->
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="32dp"
-        app:lottie_rawRes="@raw/link_chain"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true"
-        app:layout_constraintTop_toTopOf="parent"
+    <TextView
+        android:id="@+id/Forgotpasshead"
+        style="@style/loginHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="248dp"
+        android:text="SIGN UP"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <!-- Email Input Field -->
     <EditText
     android:id="@+id/email"
     android:layout_width="0dp"
     android:layout_height="60dp"
-    android:layout_marginTop="50dp"
+    android:layout_marginTop="70dp"
     android:textColor="@color/black"
     android:drawableStart="@drawable/email_icon"
     android:background="@drawable/inputtext_bar"
@@ -37,21 +39,34 @@
     android:textSize="24sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/lottieAnimationView"/>
+    app:layout_constraintTop_toBottomOf="@id/Forgotpasshead"/>
 
     <!-- Submit Button -->
-    <Button
-    android:id="@+id/submitbtn"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:text="submit"
-    android:textAlignment="center"
 
-    android:textSize="25sp"
-    android:layout_marginTop="70dp"
-    android:layout_marginHorizontal="30dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/email"/>
+    <Button
+        android:id="@+id/submitbtn"
+        android:layout_width="152dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="70dp"
+        android:foreground="@drawable/login_button_bk"
+        android:text="submit"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@id/submitbtn"
+        app:layout_constraintEnd_toEndOf="@id/submitbtn"
+        app:layout_constraintTop_toTopOf="@id/submitbtn"
+        app:layout_constraintBottom_toBottomOf="@id/submitbtn"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
