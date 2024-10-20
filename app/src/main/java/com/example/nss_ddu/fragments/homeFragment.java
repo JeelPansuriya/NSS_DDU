@@ -4,17 +4,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
 import com.example.nss_ddu.R;
 import com.example.nss_ddu.adapters.EventAdapter;
 import com.example.nss_ddu.databinding.FragmentHomeBinding;
@@ -31,6 +36,7 @@ public class homeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        setHasOptionsMenu(true);  // Enable options menu in the fragment
         return binding.getRoot();
     }
 
@@ -45,16 +51,14 @@ public class homeFragment extends Fragment {
             }
         });
 
+        // Setup the toolbar
         Toolbar toolbar = binding.toolbar;
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        // Set Title and Profile Icon click event
+        // Set Title
         toolbar.setTitle("Events");
-        binding.profileIcon.setOnClickListener(v -> {
-            // Navigate to ProfileFragment or perform desired action
-            //Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment);
-        });
 
+        // Set RecyclerView layout manager and adapter
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Initialize event adapter
@@ -91,6 +95,39 @@ public class homeFragment extends Fragment {
                 );
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home_fragment, menu);  // Inflate your menu resource
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    // Handle menu item clicks
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.action_help) {
+            Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_helpFragment);
+            return true;
+        } else if (itemId == R.id.action_logout) {
+            AWSMobileClient.getInstance().initialize(requireContext(), new com.amazonaws.mobile.client.Callback<com.amazonaws.mobile.client.UserStateDetails>() {
+                @Override
+                public void onResult(com.amazonaws.mobile.client.UserStateDetails userStateDetails) {
+                    AWSMobileClient.getInstance().signOut();
+                    Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_loginFragment);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

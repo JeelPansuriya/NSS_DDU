@@ -78,9 +78,20 @@
         <action
             android:id="@+id/action_homeFragment_to_eventDetailFragment"
             app:destination="@id/eventDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_helpFragment"
+            app:destination="@id/helpFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventDetailFragment"
         android:name="com.example.nss_ddu.fragments.EventDetailFragment"
         android:label="EventDetailFragment" />
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.example.nss_ddu.fragments.helpFragment"
+        android:label="helpFragment" />
 </navigation>

@@ -147,4 +147,7 @@
     <color name="primaryTextColor">#2661FA</color>
     <color name="loginBkColor">#f0f0f0</color>
     <color name="whiteCardColor">#fff</color>
+    <color name="primaryColor">#0A0A40</color>
+    <color name="primaryDarkColor">#0A0A40</color>
+    <color name="accentColor">#0A0A40</color>
 </resources>

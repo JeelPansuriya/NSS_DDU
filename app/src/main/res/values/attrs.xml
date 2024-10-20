@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="CustomMenu">
+        <attr name="menuBackground" format="reference|color" />
+    </declare-styleable>
+</resources>
